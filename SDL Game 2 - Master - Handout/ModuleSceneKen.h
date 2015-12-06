@@ -1,13 +1,13 @@
 #ifndef __MODULESCENEKEN_H__
 #define __MODULESCENEKEN_H__
 
-#include "Module.h"
+#include "ModuleScene.h"
 #include "Animation.h"
-#include "Globals.h"
+#include "Point.h"
 
 struct SDL_Texture;
 
-class ModuleSceneKen : public Module
+class ModuleSceneKen : public ModuleScene
 {
 
 private:
@@ -19,18 +19,24 @@ public:
 	ModuleSceneKen( bool start_enabled = true);
 	~ModuleSceneKen();
 
-	bool Start();
+	bool Init();
 	update_status Update();
-	bool CleanUp();
 
 public:
-	
-	SDL_Texture* graphics = nullptr;
 	SDL_Rect ground;
+	iPoint groundPos;
+
 	SDL_Rect background;
+	iPoint backgroundPos;
+
 	SDL_Rect ship;
+	iPoint shipPos;
+
 	Animation flag;
+	iPoint flagPos;
+
 	Animation shipGirl;
+	iPoint shipGirlPos;
 };
 
 #endif // __MODULESCENEKEN_H__

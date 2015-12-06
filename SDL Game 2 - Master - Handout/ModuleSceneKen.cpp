@@ -9,73 +9,50 @@
 #include "ModuleFadeToBlack.h"
 #include "SDL/include/SDL.h"
 
+#define CONFIG_SECTION "Scene_Ken"
+
 // Reference at https://www.youtube.com/watch?v=OEhmUuehGOA
 
-ModuleSceneKen::ModuleSceneKen(bool start_enabled) : Module(start_enabled)
+ModuleSceneKen::ModuleSceneKen(bool start_enabled) : ModuleScene(start_enabled)
 {
-	// ground
-	ground.x = 8;
-	ground.y = 391;
-	ground.w = 896;
-	ground.h = 72;
-
-	// TODO 2 : setup the foreground (red ship) with
-	// coordinates x,y,w,h from ken_stage.png
-	ship.x = 8;
-	ship.y = 24;
-	ship.w = 520;
-	ship.h = 196;
-
-	yShipOffset = 0.0f;
-	yShipDirectionDown = true;
-
-	// Background / sky
-	background.x = 72;
-	background.y = 208;
-	background.w = 768;
-	background.h = 176;
-
-	// flag animation
-	flag.frames.push_back({848, 208, 40, 40});
-	flag.frames.push_back({848, 256, 40, 40});
-	flag.frames.push_back({848, 304, 40, 40});
-	flag.speed = 0.08f;
-
-	// TODO 4: Setup Girl Animation from coordinates from ken_stage.png
-	shipGirl.frames.push_back({ 624, 16, 32, 56 });
-	shipGirl.frames.push_back({ 624, 80, 32, 56 });
-	shipGirl.frames.push_back({ 624, 144, 32, 56 });
-	shipGirl.speed = 0.05f;
 }
 
 ModuleSceneKen::~ModuleSceneKen()
 {}
 
 // Load assets
-bool ModuleSceneKen::Start()
+bool ModuleSceneKen::Init()
 {
-	LOG("Loading ken scene");
-	
-	graphics = App->textures->Load("ken_stage.png");
+	LoadSpriteSheetName(CONFIG_SECTION);
+	LoadMusicName(CONFIG_SECTION);
 
-	// TODO 7: Enable the player module
-	App->player->Enable();
-	// TODO 0: trigger background music
-	App->audio->PlayMusic("ken.ogg");
+	// ground
+	LoadSDLRect(&ground, CONFIG_SECTION, "ground");
+	LoadPoint(&groundPos, CONFIG_SECTION, "ground");
+
+	// Background / sky
+	LoadSDLRect(&background, CONFIG_SECTION, "background");
+	LoadPoint(&backgroundPos, CONFIG_SECTION, "background");
+
+	// TODO 2 : setup the foreground (red ship) with
+	// coordinates x,y,w,h from ken_stage.png
+	LoadSDLRect(&ship, CONFIG_SECTION, "ship");
+	LoadPoint(&shipPos, CONFIG_SECTION, "ship");
+
+	yShipOffset = 0.0f;
+	yShipDirectionDown = true;
+
+	// flag animation
+	flag.LoadAnimationFromConfig(&(App->ini), CONFIG_SECTION, "flag");
+	LoadPoint(&flagPos, CONFIG_SECTION, "flag");
+
+	// TODO 4: Setup Girl Animation from coordinates from ken_stage.png
+	shipGirl.LoadAnimationFromConfig(&(App->ini), CONFIG_SECTION, "shipGirl");
+	LoadPoint(&shipGirlPos, CONFIG_SECTION, "shipGirl");
 
 	return true;
 }
 
-// UnLoad assets
-bool ModuleSceneKen::CleanUp()
-{
-	LOG("Unloading ken scene");
-
-	App->textures->Unload(graphics);
-	App->player->Disable();
-	
-	return true;
-}
 
 // Update: draw background
 update_status ModuleSceneKen::Update()
@@ -102,17 +79,17 @@ update_status ModuleSceneKen::Update()
 
 	// Draw everything --------------------------------------
 	// TODO 1: Tweak the movement speed of the sea&sky + flag to your taste
-	//App->renderer->Blit(graphics, 0, 0, &background, 0.75f); // sea and sky
-	//App->renderer->Blit(graphics, 560, 8, &(flag.GetCurrentFrame()), 0.75f); // flag animation
+	App->renderer->Blit(graphics, backgroundPos.x, backgroundPos.y, &background, 0.75f); // sea and sky
+	App->renderer->Blit(graphics, flagPos.x, flagPos.y, &(flag.GetCurrentFrame()), 0.75f); // flag animation
 
 	// TODO 3: Draw the ship. Be sure to tweak the speed.
 	
-	//App->renderer->Blit(graphics, 0, (int)yShipOffset, &ship, 0.87f); // sea and sky
+	App->renderer->Blit(graphics, shipPos.x, shipPos.y + (int)yShipOffset, &ship, 0.87f); // sea and sky
 
 	// TODO 6: Draw the girl. Make sure it follows the ship movement!
-	//App->renderer->Blit(graphics, 192, 104 + (int)yShipOffset, &(shipGirl.GetCurrentFrame()), 0.87f); // flag animation
+	App->renderer->Blit(graphics, shipGirlPos.x, shipGirlPos.y + (int)yShipOffset, &(shipGirl.GetCurrentFrame()), 0.87f); // flag animation
 
-	App->renderer->Blit(graphics, 0, 170, &ground);
+	App->renderer->Blit(graphics, groundPos.x, groundPos.y, &ground);
 
 	// TODO 10: Build an entire new scene "honda", you can find its
 	// and music in the Game/ folder

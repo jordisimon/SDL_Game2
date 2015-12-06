@@ -58,6 +58,12 @@
     <ClInclude Include="ModuleSceneHonda.h">
       <Filter>Game Modules</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleIni.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScene.h">
+      <Filter>Game Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -94,6 +100,9 @@
       <Filter>Core Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleSceneHonda.cpp">
+      <Filter>Game Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScene.cpp">
       <Filter>Game Modules</Filter>
     </ClCompile>
   </ItemGroup>

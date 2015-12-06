@@ -1,27 +1,37 @@
 #pragma once
-#include "Module.h"
+#include "ModuleScene.h"
 #include "Animation.h"
-#include "Globals.h"
+#include "Point.h"
 
 struct SDL_Texture;
 
-class ModuleSceneHonda : public Module
+class ModuleSceneHonda : public ModuleScene
 {
 public:
 	ModuleSceneHonda(bool start_enabled = true);
 	~ModuleSceneHonda();
 
-	bool Start();
+	bool Init();
 	update_status Update();
-	bool CleanUp();
 
-	SDL_Texture* graphics = nullptr;
 	SDL_Rect ground;
+	iPoint groundPos;
+
 	SDL_Rect background;
+	iPoint backgroundPos;
+
 	SDL_Rect pool;
+	iPoint poolPos;
+
 	SDL_Rect ceiling;
+	iPoint ceilingPos;
+
 	SDL_Rect lamp;
+	iPoint lamp1Pos;
+	iPoint lamp2Pos;
+
 	Animation water;
+	iPoint waterPos;
 };
 
 

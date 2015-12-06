@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "ModuleSceneKen.h"
 #include "ModuleSceneHonda.h"
+#include "SimpleIni.h"
 
 class ModuleRender;
 class ModuleWindow;
@@ -29,6 +30,7 @@ public:
 	bool CleanUp();
 
 public:
+	CSimpleIniA ini;
 	ModuleRender* renderer;
 	ModuleWindow* window;
 	ModuleTextures* textures;

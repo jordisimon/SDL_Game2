@@ -8,6 +8,7 @@ struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
 
+
 class ModuleRender : public Module
 {
 public:

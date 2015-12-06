@@ -30,13 +30,15 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	backward.speed = 0.1f;
 
 	// TODO 8: setup the walk forward animation from ryu4.png
-	forward.frames.push_back({ 0, 131, 61, 87 });
-	forward.frames.push_back({ 70, 129, 59, 90 });
-	forward.frames.push_back({ 140, 128, 57, 90 });
-	forward.frames.push_back({ 797, 127, 57, 90 });
-	forward.frames.push_back({ 883, 128, 58, 91 });
-	forward.frames.push_back({ 974, 129, 57, 89 });
+	forward.frames.push_back({ 0, 127, 68, 93 });
+	forward.frames.push_back({ 78, 127, 68, 93 });
+	forward.frames.push_back({ 161, 127, 68, 93 });
+	forward.frames.push_back({ 251, 127, 73, 93 });
+	forward.frames.push_back({ 341, 127, 68, 93 });
+	forward.frames.push_back({ 419, 127, 68, 93 });
 	forward.speed = 0.1f;
+
+	currentAnimation = &forward;
 }
 
 ModulePlayer::~ModulePlayer()
@@ -50,6 +52,8 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	graphics = App->textures->Load("ryu4.png"); // arcade version
+
+	playerX = 80;
 
 	return true;
 }
@@ -70,7 +74,62 @@ update_status ModulePlayer::Update()
 	// TODO 9: Draw the player with its animation
 	// make sure to detect player movement and change its
 	// position while cycling the animation(check Animation.h)
-	App->renderer->Blit(graphics, 80, 104, &(idle.GetCurrentFrame()), 0.87f); // flag animation
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+			backward.ResetAnimation();
+
+		playerX -= (int)playerMovement;
+		App->renderer->Blit(graphics, playerX, 104, &(backward.GetCurrentFrame()), 0.87f);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+	{
+		idle.ResetAnimation();
+		App->renderer->Blit(graphics, playerX, 104, &(idle.GetCurrentFrame()), 0.87f);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+			forward.ResetAnimation();
+
+		playerX += (int)playerMovement;
+		App->renderer->Blit(graphics, playerX, 104, &(forward.GetCurrentFrame()), 0.87f);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+	{
+		idle.ResetAnimation();
+		App->renderer->Blit(graphics, playerX, 104, &(idle.GetCurrentFrame()), 0.87f);
+	}
+	else
+	{
+		App->renderer->Blit(graphics, playerX, 104, &(idle.GetCurrentFrame()), 0.87f);
+	}
+
+	/*if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		currentAnimation = &forward;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+	{
+		currentAnimation = &idle;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	{
+		currentAnimation = &backward;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN )
+	{
+		currentAnimation->PriorFrame();
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+	{
+		currentAnimation->NextFrame();
+	}
+
+	App->renderer->Blit(graphics, playerX, 104, &(currentAnimation->GetFrame()), 0.87f);*/
 
 	return UPDATE_CONTINUE;
 }

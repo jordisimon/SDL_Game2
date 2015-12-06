@@ -16,11 +16,34 @@ public:
 	Animation() : frames(), speed(1.0f), current_frame(0.0f)
 	{}
 
+	
+
 	SDL_Rect& GetCurrentFrame()
 	{
 		current_frame += speed;
 		if(current_frame >= frames.size())
 			current_frame = 0.0f;
+		return frames[(int)current_frame];
+	}
+
+	void ResetAnimation() { current_frame = 0.0f; }
+
+	void NextFrame()
+	{
+		current_frame += 1.0f;
+		if (current_frame >= frames.size())
+			current_frame = 0.0f;
+	}
+
+	void PriorFrame()
+	{
+		current_frame -= 1.0f;
+		if (current_frame < 0.0f)
+			current_frame = frames.size() - 1.0f;
+	}
+
+	SDL_Rect& GetFrame()
+	{
 		return frames[(int)current_frame];
 	}
 };

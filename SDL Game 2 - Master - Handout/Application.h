@@ -4,6 +4,8 @@
 #include<list>
 #include "Globals.h"
 #include "Module.h"
+#include "ModuleSceneKen.h"
+#include "ModuleSceneHonda.h"
 
 class ModuleRender;
 class ModuleWindow;
@@ -12,7 +14,8 @@ class ModuleInput;
 class ModuleAudio;
 class ModuleFadeToBlack;
 class ModulePlayer;
-class ModuleSceneKen;
+//class ModuleSceneKen;
+//class ModuleSceneHonda;
 
 class Application
 {
@@ -34,6 +37,7 @@ public:
 	ModuleFadeToBlack* fade;
 	ModulePlayer* player;
 	ModuleSceneKen* scene_ken;
+	ModuleSceneHonda* scene_honda;
 
 private:
 

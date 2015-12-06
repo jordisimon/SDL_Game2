@@ -61,7 +61,8 @@ bool ModuleSceneKen::Start()
 	// TODO 7: Enable the player module
 	App->player->Enable();
 	// TODO 0: trigger background music
-	
+	App->audio->PlayMusic("ken.ogg");
+
 	return true;
 }
 
@@ -101,15 +102,15 @@ update_status ModuleSceneKen::Update()
 
 	// Draw everything --------------------------------------
 	// TODO 1: Tweak the movement speed of the sea&sky + flag to your taste
-	App->renderer->Blit(graphics, 0, 0, &background, 0.75f); // sea and sky
-	App->renderer->Blit(graphics, 560, 8, &(flag.GetCurrentFrame()), 0.75f); // flag animation
+	//App->renderer->Blit(graphics, 0, 0, &background, 0.75f); // sea and sky
+	//App->renderer->Blit(graphics, 560, 8, &(flag.GetCurrentFrame()), 0.75f); // flag animation
 
 	// TODO 3: Draw the ship. Be sure to tweak the speed.
 	
-	App->renderer->Blit(graphics, 0, (int)yShipOffset, &ship, 0.87f); // sea and sky
+	//App->renderer->Blit(graphics, 0, (int)yShipOffset, &ship, 0.87f); // sea and sky
 
 	// TODO 6: Draw the girl. Make sure it follows the ship movement!
-	App->renderer->Blit(graphics, 192, 104 + (int)yShipOffset, &(shipGirl.GetCurrentFrame()), 0.87f); // flag animation
+	//App->renderer->Blit(graphics, 192, 104 + (int)yShipOffset, &(shipGirl.GetCurrentFrame()), 0.87f); // flag animation
 
 	App->renderer->Blit(graphics, 0, 170, &ground);
 
@@ -118,6 +119,12 @@ update_status ModuleSceneKen::Update()
 
 	// TODO 11: Make that pressing space triggers a switch to honda logic module
 	// using FadeToBlack module
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		App->fade->FadeToBlack(App->scene_honda, this);
+		App->fade->Enable();
+	}
+		
 
 	return UPDATE_CONTINUE;
 }

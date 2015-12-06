@@ -10,6 +10,11 @@ struct SDL_Texture;
 
 class ModulePlayer : public Module
 {
+private:
+	const float playerMovement = 1.0f;
+	int playerX;
+	Animation* currentAnimation;
+
 public:
 	ModulePlayer(bool start_enabled = true);
 	~ModulePlayer();

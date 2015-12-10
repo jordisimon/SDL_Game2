@@ -64,6 +64,7 @@ bool ModuleWindow::CleanUp()
 	}
 
 	//Quit SDL subsystems
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	SDL_Quit();
 	return true;
 }
